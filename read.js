@@ -53,17 +53,20 @@ class Label{
         for(let y=0;y < ROWS.length;y++){
             let COLUMS = ROWS[y];
             let saveRow = workSheet.getRow(y+posStart);
+            //console.log(workSheet.getRow(y+posStart).height);
 
-            for(let x = 0;x < COLUMS.length;x++){                
+            for(let x = 0;x < COLUMS.length;x++){           
                 process.stdout.write(COLUMS[x].value +"|");
-                //workSheet.getRow(y+posStart).getCell(x).value = COLUMS[x].value;
-                //let saveCell = saveRow.getCell(x);
-                //saveCell.value = COLUMS[x].value;
+                let saveCell    = saveRow.getCell(x+1);
+                saveCell.value  = COLUMS[x].value;
+                saveCell.style  = COLUMS[x].style;
+                saveCell.height = COLUMS[x].height;
             }
+            saveRow.height = workSheet.getRow(y+1).height;
             saveRow.commit();
-            console.log("------------------");
+            console.log("\n------------------");
         }
         //Finally creating XLSX file
-        //this.workbook.xlsx.writeFile('./xls/new.xlsx');
+        this.workbook.xlsx.writeFile('./xls/new.xlsx');
     }
 }
