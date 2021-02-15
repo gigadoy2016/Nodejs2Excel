@@ -30,7 +30,7 @@ class Label{
     label_2 = 13336;
     label_3 = 13385;
     label_4 = 3080321001;
-s
+
     constructor(workbook,sheetName){
         this.workbook = workbook;
         this.sheetName = sheetName;
