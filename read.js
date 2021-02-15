@@ -28,8 +28,9 @@ try{
 class Label{
     ROWS = new Array();
     label_1 = 'L3 / Box No. : ';
-    label_2 = '';
-    label_3 = '';
+    label_2 = 13336;
+    label_3 = 13385;
+    label_4 = 3080321001;
 
     constructor(workbook,sheetName){
         this.workbook = workbook;
@@ -76,6 +77,13 @@ class Label{
                     saveCell.height = COLUMS[x].height;
                     if(y===0 && x ===1){
                         saveCell.value  = this.label_1+(z+1);
+                    }else if(y===4 && x ===1){
+                        saveCell.value  = this.label_2+(50*z);
+                    }else if(y===4 && x ===2){
+                        saveCell.value  = this.label_3+(50*z);
+                    }else if(y===6 && x ===1){
+                        let label = "ID : LISH"+ (parseInt(this.label_4)+(z));
+                        saveCell.value  = label;
                     }
                 }
                 if(y===2){
