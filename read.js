@@ -1,24 +1,35 @@
 const ExcelJS = require('exceljs');
+
 const workbook = new ExcelJS.Workbook(); 
 //var filename = './xls/template.xlsx';
 var filename = './xls/template.xlsx';
 var sheet = 'Sheet1';
-var label_1 = 'Box No. :';
-var tagLABEL;
+
+var border_1 = {
+    top: {style:'medium', color: {argb:'00000000'}},
+    left: {style:'medium', color: {argb:'00000000'}},
+    bottom: {style:'medium', color: {argb:'00000000'}},
+    right: {style:'medium', color: {argb:'00000000'}}
+  };
 
 try{
     workbook.xlsx.readFile(filename).then(function() {
         //let workSheet = workbook.getWorksheet(sheet);
         let obj = new Label(workbook,sheet);
-        obj.setLabel(8,4);
-        obj.getLabel(10);
+        obj.setLabel(8,4);                  // original Tempplate(RowNumber,columnNumber)
+        obj.getLabel(10,5);                 // (positionStart, number of copy)
     });
 }catch{
     console.log('error');
 }
-
+//----------------------------------------------------------
+//
+//----------------------------------------------------------
 class Label{
     ROWS = new Array();
+    label_1 = 'L3 / Box No. : ';
+    label_2 = '';
+    label_3 = '';
 
     constructor(workbook,sheetName){
         this.workbook = workbook;
@@ -46,25 +57,36 @@ class Label{
         this.tagLABEL = ROWS;
     }
 
-    getLabel(posStart){
+    getLabel(posStart,copyNumber){
         let ROWS = this.tagLABEL;
         let workSheet = this.workbook.getWorksheet(this.sheetName);
 
-        for(let y=0;y < ROWS.length;y++){
-            let COLUMS = ROWS[y];
-            let saveRow = workSheet.getRow(y+posStart);
-            //console.log(workSheet.getRow(y+posStart).height);
+        for(let z = 1; z <= copyNumber; z++){
+            let nextPos = posStart * z ;
+            for(let y=0;y < ROWS.length;y++){
+                let COLUMS = ROWS[y];
+                let saveRow = workSheet.getRow(y+nextPos);
+                //console.log(workSheet.getRow(y+posStart).height);
 
-            for(let x = 0;x < COLUMS.length;x++){           
-                process.stdout.write(COLUMS[x].value +"|");
-                let saveCell    = saveRow.getCell(x+1);
-                saveCell.value  = COLUMS[x].value;
-                saveCell.style  = COLUMS[x].style;
-                saveCell.height = COLUMS[x].height;
+                for(let x = 0;x < COLUMS.length;x++){           
+                    //process.stdout.write(COLUMS[x].value +"|");
+                    let saveCell    = saveRow.getCell(x+1);
+                    saveCell.value  = COLUMS[x].value;
+                    saveCell.style  = COLUMS[x].style;
+                    saveCell.height = COLUMS[x].height;
+                    if(y===0 && x ===1){
+                        saveCell.value  = this.label_1+(z+1);
+                    }
+                }
+                if(y===2){
+                    let a = y+nextPos;
+                    workSheet.mergeCells('B'+a+':C'+a);
+                    workSheet.getCell('B'+a+':C'+a).border  = border_1;
+                }
+                saveRow.height = workSheet.getRow(y+1).height;
+                saveRow.commit();                
             }
-            saveRow.height = workSheet.getRow(y+1).height;
-            saveRow.commit();
-            console.log("\n------------------");
+            console.log("\n------------------ copy"+z);
         }
         //Finally creating XLSX file
         this.workbook.xlsx.writeFile('./xls/new.xlsx');
