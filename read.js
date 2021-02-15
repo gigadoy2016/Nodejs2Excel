@@ -1,7 +1,6 @@
 const ExcelJS = require('exceljs');
 
 const workbook = new ExcelJS.Workbook(); 
-//var filename = './xls/template.xlsx';
 var filename = './xls/template.xlsx';
 var sheet = 'Sheet1';
 
@@ -17,7 +16,7 @@ try{
         //let workSheet = workbook.getWorksheet(sheet);
         let obj = new Label(workbook,sheet);
         obj.setLabel(8,4);                  // original Tempplate(RowNumber,columnNumber)
-        obj.getLabel(10,5);                 // (positionStart, number of copy)
+        obj.getLabel(10,300);               // (positionStart, number of copy)
     });
 }catch{
     console.log('error');
@@ -28,9 +27,10 @@ try{
 class Label{
     ROWS = new Array();
     label_1 = 'L3 / Box No. : ';
-    label_2 = '';
-    label_3 = '';
-
+    label_2 = 13336;
+    label_3 = 13385;
+    label_4 = 3080321001;
+s
     constructor(workbook,sheetName){
         this.workbook = workbook;
         this.sheetName = sheetName;
@@ -76,6 +76,13 @@ class Label{
                     saveCell.height = COLUMS[x].height;
                     if(y===0 && x ===1){
                         saveCell.value  = this.label_1+(z+1);
+                    }else if(y===4 && x ===1){
+                        saveCell.value  = this.label_2+(50*z);
+                    }else if(y===4 && x ===2){
+                        saveCell.value  = this.label_3+(50*z);
+                    }else if(y===6 && x ===1){
+                        let label = "ID : LISH"+ (parseInt(this.label_4)+(z));
+                        saveCell.value  = label;
                     }
                 }
                 if(y===2){
