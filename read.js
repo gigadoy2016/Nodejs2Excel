@@ -17,7 +17,7 @@ try{
         //let workSheet = workbook.getWorksheet(sheet);
         let obj = new Label(workbook,sheet);
         obj.setLabel(8,4);                  // original Tempplate(RowNumber,columnNumber)
-        obj.getLabel(10,5);                 // (positionStart, number of copy)
+        obj.getLabel(10,300);                 // (positionStart, number of copy)
     });
 }catch{
     console.log('error');
