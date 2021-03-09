@@ -2,7 +2,6 @@ const ExcelJS = require('exceljs');
 const Label = require('./Label.js');
 
 const workbook = new ExcelJS.Workbook(); 
-//var filename = './xls/template.xlsx';
 var filename = './xls/template.xlsx';
 var sheet = 'Sheet1';
 
@@ -23,4 +22,4 @@ try{
 }catch{
     console.log('error');
 }
-console.log('test');
+console.log('worked');
